@@ -12,8 +12,11 @@ BaselineOfAISorter >> baseline: spec [
 	spec for: #common do: [
 			spec postLoadDoIt: #postLoad.
 			spec baseline: 'NeoJSON' with: [ spec repository: 'github://svenvc/NeoJSON/repository' ].
-			spec baseline: 'ExtendedHeuristicCompletionBenchmarks' with: [ spec repository: 'github://omarabedelkader/HeuristicCompletion-Benchmarks/repository' ].
-			spec package: 'AI-Sorter' ]
+
+			spec package: 'AI-Sorter'.
+			spec package: 'AI-Sorter-Exporter' with: [ spec requires: #( 'AI-Sorter' ) ].
+			spec package: 'AI-Sorter-Benchmarks' with: [ spec requires: #( 'AI-Sorter' ) ].
+			spec package: 'AI-Sorter-Tests' with: [ spec requires: #( 'AI-Sorter' ) ] ]
 ]
 
 { #category : 'baselines' }

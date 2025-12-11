@@ -12,8 +12,8 @@ Class {
 	#instVars : [
 		'entries'
 	],
-	#category : 'AI-Sorter',
-	#package : 'AI-Sorter'
+	#category : 'AI-Sorter-Exporter',
+	#package : 'AI-Sorter-Exporter'
 }
 
 { #category : 'as yet unclassified' }
