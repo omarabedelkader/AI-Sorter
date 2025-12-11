@@ -32,6 +32,15 @@ OCodeLlamaModel class >> code7b [
 		  yourself
 ]
 
+{ #category : 'as yet unclassified' }
+OCodeLlamaModel class >> latest [
+
+        <ollamaInit: 'merged-model:latest'>
+        ^ self new
+                  tag: 'latest';
+                  yourself
+]
+
 { #category : 'accessing' }
 OCodeLlamaModel >> name [
 

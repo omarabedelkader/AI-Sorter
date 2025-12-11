@@ -22,7 +22,7 @@ Class {
 { #category : 'accessing' }
 OllamaAPI class >> defaultModel [
 
-	^ defaultModel ifNil: [ defaultModel := OCodeLlamaModel class >> #b7 ]
+	^defaultModel ifNil: [ defaultModel := OMergedModel class >> #latest ]
 ]
 
 { #category : 'accessing' }
@@ -34,19 +34,19 @@ OllamaAPI class >> defaultModel: anObject [
 { #category : 'accessing' }
 OllamaAPI class >> ollamaSettings: aBuilder [
 
-	<systemsettings>
-	(aBuilder group: #ChatPharo)
-		parent: #tools;
-		with: [
-			(aBuilder pickOne: #defaultModel)
-				order: -100000;
-				label: 'Ollama Default model';
-				target: self;
-				default: OCodeLlamaModel class >> #b7;
-				domainValues:
-					(((Pragma allNamed: #ollamaInit:) collect: [ :pragma |
-							  pragma arguments first -> pragma method ]) sorted: [ :a :b |
-							 a key < b key ]);
+<systemsettings>
+(aBuilder group: #ChatPharo)
+parent: #tools;
+with: [
+(aBuilder pickOne: #defaultModel)
+order: -100000;
+label: 'Ollama Default model';
+target: self;
+default: OMergedModel class >> #latest;
+domainValues:
+(((Pragma allNamed: #ollamaInit:) collect: [ :pragma |
+pragma arguments first -> pragma method ]) sorted: [ :a :b |
+ a key < b key ]);
 				ghostHelp: 'Model name' ]
 ]
 
@@ -223,24 +223,39 @@ OllamaAPI >> query: aTextQuery [
 	paramDic := Dictionary new.
 	paramDic at: #model put: self model fullName.
 	paramDic at: #prompt put: (self buildQuery: aTextQuery).
-	paramDic at: #stream put: self stream.
-	self format ifNotNil: [ :f | paramDic at: #format put: f ].
+	paramDic := Dictionary new.
+paramDic at: #model put: self model fullName.
+paramDic at: #prompt put: (self buildQuery: aTextQuery).
+paramDic at: #stream put: self stream.
+self format ifNotNil: [ :f | paramDic at: #format put: f ].
+Transcript
+cr;
+show: 'Sending Ollama query with payload: ';
+show: paramDic printString.
 
 
-	self addParameterTo: paramDic.
-	znClient contents: paramDic.
+self addParameterTo: paramDic.
+znClient contents: paramDic.
 
-	self stream
-		ifTrue: [
-			znClient streaming: true.
-			^ znClient post ]
-		ifFalse: [
-			| reader | 
-			znClient forJsonREST.
-			reader := ZnUtils defaultJSONReader.
-			znClient contentReader: [ :entity |
-				reader fromString: entity contents ].
-			^ znClient post at: #response ]
+self stream
+ifTrue: [
+znClient streaming: true.
+Transcript
+cr;
+show: 'Streaming response enabled for Ollama query.'.
+^ znClient post ]
+ifFalse: [
+| reader response |
+znClient forJsonREST.
+reader := ZnUtils defaultJSONReader.
+znClient contentReader: [ :entity |
+reader fromString: entity contents ].
+response := znClient post at: #response.
+Transcript
+cr;
+show: 'Received Ollama response: ';
+show: response printString.
+^ response ]
 ]
 
 { #category : 'accessing' }
@@ -277,28 +292,39 @@ OllamaAPI >> reRankCandidates: candidateEntries withContext: textSoFar [
 ]
 
 { #category : 'accessing' }
-OllamaAPI >> sendReRankRequestToOllama: aPayload [ 
-    | znClient paramDic |
-    znClient := ZnClient new.
-    znClient
-        accept: ZnMimeType applicationJson;
-        contentWriter: [:data | ZnEntity json: (NeoJSONWriter toString: data)].
-    znClient host: self host.
-    znClient port: self port.
-    znClient path: 'api/rerank'.
+OllamaAPI >> sendReRankRequestToOllama: aPayload [
 
-    "Now paramDic is your final request body."
-    paramDic := Dictionary new.
-    paramDic at: #model put: self model fullName.
-    paramDic at: #prompt put: (aPayload isString ifTrue: aPayload ifFalse: (aPayload at: #prompt ifAbsent: ['?'])).
-    paramDic at: #stream put: false.
+	| znClient paramDic |
+	znClient := ZnClient new.
+	znClient
+		accept: ZnMimeType applicationJson;
+		contentWriter: [ :data | ZnEntity json: (NeoJSONWriter toString: data) ].
+	znClient host: self host.
+	znClient port: self port.
+	znClient path: 'api/rerank'. "Now paramDic is your final request body."
+	paramDic := Dictionary new.
+paramDic at: #model put: self model fullName.
+    paramDic at: #prompt put: (aPayload isString
+        ifTrue: [ aPayload ]
+        ifFalse: [ aPayload at: #prompt ifAbsent: [ '?' ] ]).
+paramDic at: #stream put: false.
+Transcript
+cr;
+show: 'Sending Ollama rerank request: ';
+show: paramDic printString.
 
-    "Add more stuff if your Rerank endpoint requires it."
-    self addParameterTo: paramDic.
+"Add more stuff if your Rerank endpoint requires it."
+self addParameterTo: paramDic.
 
-    znClient contents: paramDic.
-    znClient forJsonREST.
-    ^ znClient post at: #response
+znClient contents: paramDic.
+znClient forJsonREST.
+^ [
+znClient post at: #response
+] ensure: [
+Transcript
+cr;
+show: 'Received Ollama rerank response.'.
+]
 ]
 
 { #category : 'accessing' }
