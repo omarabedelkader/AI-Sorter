@@ -1,21 +1,23 @@
 "
+To begin you can execute this:
+
+```st 
+CooCompletionDatasetExporter
+    exportOnPackage: 'NECompletion'
+    heuristics: [ :builder | builder messageHeuristic ]
+	 context: #none
+    to: 'completion-dataset.json'.
 ```
+
+
 Available contexts
 - #none:                 	no surrounding information, emits context {}
 - #completion:           	receiver expression and the requested prefix
 - #surroundingCompletion:	source up to the call site plus the requested prefix (default fallback)
 - #method:               	full method source
 - #classSignature:       	class definition plus method signatures
-- #class:                	class definition plus full method sources
-```
+- #class:  
 
-
-```
-CooCompletionDatasetExporter
-    exportOnPackage: 'NECompletion'
-    heuristics: [ :builder | builder messageHeuristic ]
-    to: 'completion-dataset.json'.
-```
 
 ```
 Metacello new
@@ -107,17 +109,6 @@ CooCompletionDatasetExporter class >> exportAllMessages [
 			     'Moose-TestResources-Reference-PackageTwo' 'MooseIDE-ButterflyMap-Tests' 'MooseIDE-CoUsageMap-Tests'
 			     'MooseIDE-CriticBrowser-Tests' 'MooseIDE-NewTools-Tests' 'MooseIDE-QueriesBrowser-Tests' 'MooseIDE-Spotter-Tests'
 			     'MooseIDE-Tagging-Tests' 'MooseIDE-Tests' )
-		  heuristics: [ :builder | builder messageHeuristic ]
-		  context: #none
-		  to: 'completion-dataset.json'
-]
-
-{ #category : 'as yet unclassified' }
-CooCompletionDatasetExporter class >> exportAllMessages1 [
-	"Chnage the context if you want to channge which type of data you want. Refer to comments"
-	<script>
-	^ self
-		  exportOnPackages: #( 'Iceberg' )
 		  heuristics: [ :builder | builder messageHeuristic ]
 		  context: #none
 		  to: 'completion-dataset.json'
