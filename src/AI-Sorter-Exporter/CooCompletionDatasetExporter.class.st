@@ -1,12 +1,12 @@
 "
 ```
 Available contexts
-- #none:                 no surrounding information, emits context {}
-- #completion:           receiver expression and the requested prefix
-- #surroundingCompletion:source up to the call site plus the requested prefix (default fallback)
-- #method:               full method source
-- #classSignature:       class definition plus method signatures
-- #class:                class definition plus full method sources
+- #none:                 	no surrounding information, emits context {}
+- #completion:           	receiver expression and the requested prefix
+- #surroundingCompletion:	source up to the call site plus the requested prefix (default fallback)
+- #method:               	full method source
+- #classSignature:       	class definition plus method signatures
+- #class:                	class definition plus full method sources
 ```
 
 
@@ -53,7 +53,8 @@ Class {
 
 { #category : 'as yet unclassified' }
 CooCompletionDatasetExporter class >> exportAllMessages [
-
+	"Chnage the context if you want to channge which type of data you want. Refer to comments"
+	<script>
 	^ self
 		  exportOnPackages:
 			  #( 'Iceberg' 'Iceberg-ArchitecturalRules' 'Iceberg-Libgit' 'Iceberg-Libgit-Filetree' 'Iceberg-Libgit-Tonel'
@@ -84,90 +85,42 @@ CooCompletionDatasetExporter class >> exportAllMessages [
 			     'Spec2-Dialogs' 'Spec2-Examples' 'Spec2-Interactions' 'Spec2-Layout' 'Spec2-ListView' 'Spec2-Microdown' 'Spec2-Morphic'
 			     'Spec2-Morphic-Examples' 'Spec2-Transmission' 'Spec2-Adapters-Morphic-Tests' 'Spec2-Backend-Tests' 'Spec2-Code-Backend-Tests'
 			     'Spec2-Code-Diff-Tests' 'Spec2-Code-Tests' 'Spec2-Commander2-Tests' 'Spec2-Dialogs-Tests' 'Spec2-Morphic-Backend-Tests'
-			     'Spec2-Morphic-Tests' 'Spec2-Tests'
-        'Moose-Blueprint-Invocations-Models'
-        'Moose-Blueprint-Models'
-        'Moose-Blueprint-Visualization-Models'
-        'Moose-Configuration'
-        'Moose-Core'
-        'Moose-Core-Generator'
-        'Moose-Importers'
-        'Moose-Query'
-        'Moose-Query-Extensions'
-        'Moose-SmalltalkImporter'
-        'MooseIDE-WelcomeBrowser'
-        'MooseIDE-Analysis'
-        'MooseIDE-AttributedText'
-        'MooseIDE-ButterflyMap'
-        'MooseIDE-ClassBlueprint'
-        'MooseIDE-CoUsageMap'
-        'MooseIDE-Core'
-        'MooseIDE-Core-Reporter'
-        'MooseIDE-CriticBrowser'
-        'MooseIDE-Dependency'
-        'MooseIDE-Duplication'
-        'MooseIDE-Export'
-        'MooseIDE-Famix'
-        'MooseIDE-LayerVisualization'
-        'MooseIDE-Meta'
-        'MooseIDE-NewTools'
-        'MooseIDE-QueriesBrowser'
-        'MooseIDE-QueriesDashboard'
-        'MooseIDE-Spotter'
-        'MooseIDE-Tagging'
-        'MooseIDE-Visualization'
-        'Moose-Blueprint-Models-Tests'
-        'Moose-Core-Tests'
-        'Moose-Core-Tests-Entities'
-        'Moose-Importers-Tests'
-        'Moose-Query-Test'
-        'Moose-SmalltalkImporter-Core-Tests'
-        'Moose-SmalltalkImporter-KGB-Tests'
-        'Moose-SmalltalkImporter-LAN-Tests'
-        'Moose-TestResources-KGB-P10InteractedReferee'
-        'Moose-TestResources-KGB-P11FullReferee'
-        'Moose-TestResources-KGB-P12FullReferencer'
-        'Moose-TestResources-KGB-P13FullReferencer'
-        'Moose-TestResources-KGB-P14FullReferee'
-        'Moose-TestResources-KGB-P1FullReferencer'
-        'Moose-TestResources-KGB-P2InteractedReferencerReferee'
-        'Moose-TestResources-KGB-P3InteractedReferencer'
-        'Moose-TestResources-KGB-P4FullInteracted'
-        'Moose-TestResources-KGB-P5FullReferee'
-        'Moose-TestResources-KGB-P6InteractedReferee'
-        'Moose-TestResources-KGB-P7ReferencerReferee'
-        'Moose-TestResources-KGB-P8FullReferencer'
-        'Moose-TestResources-KGB-P9FullReferencer'
-        'Moose-TestResources-KGB-PExtensions'
-        'Moose-TestResources-LAN'
-        'Moose-TestResources-LCOM'
-        'Moose-TestResources-PackageBlueprint-P1'
-        'Moose-TestResources-PackageBlueprint-P2'
-        'Moose-TestResources-PackageBlueprint-P3'
-        'Moose-TestResources-PackageBlueprint-P4'
-        'Moose-TestResources-Reference-Core'
-        'Moose-TestResources-Reference-External'
-        'Moose-TestResources-Reference-PackageOne'
-        'Moose-TestResources-Reference-PackageTwo'
-        'MooseIDE-ButterflyMap-Tests'
-        'MooseIDE-CoUsageMap-Tests'
-        'MooseIDE-CriticBrowser-Tests'
-        'MooseIDE-NewTools-Tests'
-        'MooseIDE-QueriesBrowser-Tests'
-        'MooseIDE-Spotter-Tests'
-        'MooseIDE-Tagging-Tests'
-        'MooseIDE-Tests' )
+			     'Spec2-Morphic-Tests' 'Spec2-Tests' 'Moose-Blueprint-Invocations-Models' 'Moose-Blueprint-Models' 'Moose-Blueprint-Visualization-Models'
+			     'Moose-Configuration' 'Moose-Core' 'Moose-Core-Generator' 'Moose-Importers' 'Moose-Query' 'Moose-Query-Extensions'
+			     'Moose-SmalltalkImporter' 'MooseIDE-WelcomeBrowser' 'MooseIDE-Analysis' 'MooseIDE-AttributedText'
+			     'MooseIDE-ButterflyMap' 'MooseIDE-ClassBlueprint' 'MooseIDE-CoUsageMap' 'MooseIDE-Core' 'MooseIDE-Core-Reporter'
+			     'MooseIDE-CriticBrowser' 'MooseIDE-Dependency' 'MooseIDE-Duplication' 'MooseIDE-Export' 'MooseIDE-Famix' 'MooseIDE-LayerVisualization'
+			     'MooseIDE-Meta' 'MooseIDE-NewTools' 'MooseIDE-QueriesBrowser' 'MooseIDE-QueriesDashboard' 'MooseIDE-Spotter'
+			     'MooseIDE-Tagging' 'MooseIDE-Visualization' 'Moose-Blueprint-Models-Tests' 'Moose-Core-Tests' 'Moose-Core-Tests-Entities'
+			     'Moose-Importers-Tests' 'Moose-Query-Test' 'Moose-SmalltalkImporter-Core-Tests' 'Moose-SmalltalkImporter-KGB-Tests'
+			     'Moose-SmalltalkImporter-LAN-Tests' 'Moose-TestResources-KGB-P10InteractedReferee'
+			     'Moose-TestResources-KGB-P11FullReferee' 'Moose-TestResources-KGB-P12FullReferencer'
+			     'Moose-TestResources-KGB-P13FullReferencer' 'Moose-TestResources-KGB-P14FullReferee'
+			     'Moose-TestResources-KGB-P1FullReferencer' 'Moose-TestResources-KGB-P2InteractedReferencerReferee'
+			     'Moose-TestResources-KGB-P3InteractedReferencer' 'Moose-TestResources-KGB-P4FullInteracted'
+			     'Moose-TestResources-KGB-P5FullReferee' 'Moose-TestResources-KGB-P6InteractedReferee'
+			     'Moose-TestResources-KGB-P7ReferencerReferee' 'Moose-TestResources-KGB-P8FullReferencer'
+			     'Moose-TestResources-KGB-P9FullReferencer' 'Moose-TestResources-KGB-PExtensions' 'Moose-TestResources-LAN'
+			     'Moose-TestResources-LCOM' 'Moose-TestResources-PackageBlueprint-P1' 'Moose-TestResources-PackageBlueprint-P2'
+			     'Moose-TestResources-PackageBlueprint-P3' 'Moose-TestResources-PackageBlueprint-P4'
+			     'Moose-TestResources-Reference-Core' 'Moose-TestResources-Reference-External' 'Moose-TestResources-Reference-PackageOne'
+			     'Moose-TestResources-Reference-PackageTwo' 'MooseIDE-ButterflyMap-Tests' 'MooseIDE-CoUsageMap-Tests'
+			     'MooseIDE-CriticBrowser-Tests' 'MooseIDE-NewTools-Tests' 'MooseIDE-QueriesBrowser-Tests' 'MooseIDE-Spotter-Tests'
+			     'MooseIDE-Tagging-Tests' 'MooseIDE-Tests' )
 		  heuristics: [ :builder | builder messageHeuristic ]
+		  context: #none
 		  to: 'completion-dataset.json'
 ]
 
 { #category : 'as yet unclassified' }
-CooCompletionDatasetExporter class >> exportOnPackage: aPackageOrName heuristics: aHeuristicsBlock to: aPathString [
-
+CooCompletionDatasetExporter class >> exportAllMessages1 [
+	"Chnage the context if you want to channge which type of data you want. Refer to comments"
+	<script>
 	^ self
-                exportOnPackages: { aPackageOrName }
-                heuristics: aHeuristicsBlock
-                to: aPathString
+		  exportOnPackages: #( 'Iceberg' )
+		  heuristics: [ :builder | builder messageHeuristic ]
+		  context: #none
+		  to: 'completion-dataset.json'
 ]
 
 { #category : 'as yet unclassified' }
@@ -194,28 +147,6 @@ exporter := self new
         exporter writeToFileNamed: aPathString.
         ^ exporter
 
-]
-
-{ #category : 'as yet unclassified' }
-CooCompletionDatasetExporter class >> exportOnPackages: aCollectionOfPackages heuristics: aHeuristicsBlock to: aPathString [
-
-        | exporter |
-
-        exporter := self new
-                            builder: CoASTHeuristicsResultSetBuilder new;
-                            yourself.
-
-        aHeuristicsBlock ifNotNil: [ aHeuristicsBlock value: exporter builder ].
-aCollectionOfPackages do: [ :packageOrName |
-                | package |
-                package := packageOrName isString
-                                       ifTrue: [ PackageOrganizer default packageNamed: packageOrName ]
-                                       ifFalse: [ packageOrName ].
-                package ifNil: [ ^ self error: 'Package not found: ' , packageOrName printString ].
-exporter scope: (CoBenchmarkPackage on: package).
-                exporter run ].
-exporter writeToFileNamed: aPathString.
-        ^ exporter
 ]
 
 { #category : 'accessing' }
