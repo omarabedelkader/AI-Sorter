@@ -40,7 +40,7 @@ Metacello new
 
 "
 Class {
-	#name : 'CooCompletionDatasetExporter',
+	#name : 'CooCompletionDatasetExporterMessages',
 	#superclass : 'CooStaticBenchmarksMessage',
 	#instVars : [
 		'entries',
@@ -54,7 +54,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-CooCompletionDatasetExporter class >> exportAllMessages [
+CooCompletionDatasetExporterMessages class >> exportAllMessages [
 	"Chnage the context if you want to channge which type of data you want. Refer to comments"
 	<script>
 	^ self
@@ -115,7 +115,7 @@ CooCompletionDatasetExporter class >> exportAllMessages [
 ]
 
 { #category : 'as yet unclassified' }
-CooCompletionDatasetExporter class >> exportOnPackages: aCollectionOfPackages heuristics: aHeuristicsBlock context: aContextStrategy to: aPathString [
+CooCompletionDatasetExporterMessages class >> exportOnPackages: aCollectionOfPackages heuristics: aHeuristicsBlock context: aContextStrategy to: aPathString [
 
 | exporter |
 exporter := self new
@@ -141,7 +141,7 @@ exporter := self new
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> benchCallsite: aMessageNode inMethod: aMethod atPosition: aPosition [
+CooCompletionDatasetExporterMessages >> benchCallsite: aMessageNode inMethod: aMethod atPosition: aPosition [
 
 	| originalSelector position |
 	originalSelector := aMessageNode selector.
@@ -166,7 +166,7 @@ CooCompletionDatasetExporter >> benchCallsite: aMessageNode inMethod: aMethod at
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> classFullContextFor: aMethod [
+CooCompletionDatasetExporterMessages >> classFullContextFor: aMethod [
 
         | methodClass |
         methodClass := aMethod methodClass.
@@ -186,7 +186,7 @@ CooCompletionDatasetExporter >> classFullContextFor: aMethod [
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> classSignatureContextFor: aMethod [
+CooCompletionDatasetExporterMessages >> classSignatureContextFor: aMethod [
 
         | methodClass |
         methodClass := aMethod methodClass.
@@ -206,7 +206,7 @@ CooCompletionDatasetExporter >> classSignatureContextFor: aMethod [
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> completionContextFor: aMessageNode withPrefix: prefix [
+CooCompletionDatasetExporterMessages >> completionContextFor: aMessageNode withPrefix: prefix [
 
         | receiver source |
         receiver := aMessageNode receiver.
@@ -219,7 +219,7 @@ CooCompletionDatasetExporter >> completionContextFor: aMessageNode withPrefix: p
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> contextFor: aMessageNode atPosition: aPosition withPrefix: prefix [
+CooCompletionDatasetExporterMessages >> contextFor: aMessageNode atPosition: aPosition withPrefix: prefix [
 
         | source position endIndex prefixContext |
         source := aMessageNode methodNode source.
@@ -237,7 +237,7 @@ CooCompletionDatasetExporter >> contextFor: aMessageNode atPosition: aPosition w
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> contextFor: aMessageNode inMethod: aMethod atPosition: aPosition withPrefix: prefix [
+CooCompletionDatasetExporterMessages >> contextFor: aMessageNode inMethod: aMethod atPosition: aPosition withPrefix: prefix [
 
          ^ self contextStrategy
                 caseOf: {
@@ -251,24 +251,24 @@ CooCompletionDatasetExporter >> contextFor: aMessageNode inMethod: aMethod atPos
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> contextStrategy [
+CooCompletionDatasetExporterMessages >> contextStrategy [
 
         ^ contextStrategy
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> contextStrategy: aSymbol [
+CooCompletionDatasetExporterMessages >> contextStrategy: aSymbol [
 
         contextStrategy := aSymbol ifNil: [ #completion ]
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> entries [
+CooCompletionDatasetExporterMessages >> entries [
         ^ entries
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> entriesAsJsonString [
+CooCompletionDatasetExporterMessages >> entriesAsJsonString [
 
         ^ NeoJSONWriter toString: (entries collect: [ :entry |
                           Dictionary new
@@ -279,7 +279,7 @@ CooCompletionDatasetExporter >> entriesAsJsonString [
 ]
 
 { #category : 'initialization' }
-CooCompletionDatasetExporter >> initialize [
+CooCompletionDatasetExporterMessages >> initialize [
 
         super initialize.
                 entries := OrderedCollection new.
@@ -290,7 +290,7 @@ CooCompletionDatasetExporter >> initialize [
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> methodContextFor: aMethod [
+CooCompletionDatasetExporterMessages >> methodContextFor: aMethod [
 
         ^ methodContextCache
                   at: aMethod
@@ -298,7 +298,7 @@ CooCompletionDatasetExporter >> methodContextFor: aMethod [
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> recordContext: context candidates: candidates correct: originalSelector [
+CooCompletionDatasetExporterMessages >> recordContext: context candidates: candidates correct: originalSelector [
 
         entries add: (Dictionary new
                                   at: #context put: context;
@@ -308,7 +308,7 @@ CooCompletionDatasetExporter >> recordContext: context candidates: candidates co
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> run [
+CooCompletionDatasetExporterMessages >> run [
 
 	scope methodsDo: [ :method |
 		method parseTree nodesDo: [ :node |
@@ -316,7 +316,7 @@ CooCompletionDatasetExporter >> run [
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> sourceForMethod: aMethod [
+CooCompletionDatasetExporterMessages >> sourceForMethod: aMethod [
 
         | source |
         source := (aMethod respondsTo: #sourceCode)
@@ -329,7 +329,7 @@ CooCompletionDatasetExporter >> sourceForMethod: aMethod [
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> sourceForNode: aNode inMethodSource: source [
+CooCompletionDatasetExporterMessages >> sourceForNode: aNode inMethodSource: source [
 
         | interval |
         (aNode isNil or: [ source isNil ]) ifTrue: [ ^ '' ].
@@ -344,7 +344,7 @@ CooCompletionDatasetExporter >> sourceForNode: aNode inMethodSource: source [
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> surroundingCompletionContextFor: aMessageNode atPosition: aPosition withPrefix: prefix [
+CooCompletionDatasetExporterMessages >> surroundingCompletionContextFor: aMessageNode atPosition: aPosition withPrefix: prefix [
 
         | source position endIndex prefixContext |
         source := aMessageNode methodNode source.
@@ -362,7 +362,7 @@ CooCompletionDatasetExporter >> surroundingCompletionContextFor: aMessageNode at
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> writeToFileNamed: aString [
+CooCompletionDatasetExporterMessages >> writeToFileNamed: aString [
 
         | reference |
         reference := aString asFileReference.
@@ -374,7 +374,7 @@ CooCompletionDatasetExporter >> writeToFileNamed: aString [
 ]
 
 { #category : 'accessing' }
-CooCompletionDatasetExporter >> writeToFileReference: aFileReference [
+CooCompletionDatasetExporterMessages >> writeToFileReference: aFileReference [
 
         aFileReference writeStreamDo: [ :stream |
                 stream
