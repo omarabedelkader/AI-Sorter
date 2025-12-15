@@ -260,35 +260,28 @@ show: response printString.
 
 { #category : 'accessing' }
 OllamaAPI >> reRankCandidates: candidateEntries withContext: textSoFar [
-    "Send a request to Ollama to reorder 'candidateEntries' (which are 
+	"Send a request to Ollama to reorder 'candidateEntries' (which are 
      NECEntry objects or similar). Return them in a new sorted order."
 
-    | candidateStrings requestPayload response rankedStrings finalOrdered |
-
-    "1. Convert the candidate entries into strings for the API."
-    candidateStrings := candidateEntries collect: [ :entry | entry contents ].
-
-    "2. Build a textual prompt or JSON that tells Ollama how to do the re-rank."
-    requestPayload := self buildReRankPayloadWith: candidateStrings context: textSoFar.
-
-    "3. Actually send requestPayload to Ollama. For example, we might do 
+	| candidateStrings requestPayload response rankedStrings finalOrdered |
+	"1. Convert the candidate entries into strings for the API."
+	candidateStrings := candidateEntries collect: [ :entry | entry contents ]. "2. Build a textual prompt or JSON that tells Ollama how to do the re-rank."
+	requestPayload := self buildReRankPayloadWith: candidateStrings context: textSoFar. "3. Actually send requestPayload to Ollama. For example, we might do 
         3.1) paramDic at: #model put: 'some-lora-model'
         3.2) paramDic at: #prompt put: 'Rank the following strings...'
      Then parse the JSON result to get an array of strings in the new order."
-    response := self sendReRankRequestToOllama: requestPayload.
-
-    "4. Suppose the response includes an array of candidate strings in new rank order."
-    rankedStrings := response at: #ranked ifAbsent: [ candidateStrings ].
-
-    "5. Match them back to your original `candidateEntries`, so we can return 
+	response := self sendReRankRequestToOllama: requestPayload. "4. Suppose the response includes an array of candidate strings in new rank order."
+	rankedStrings := (response isDictionary)
+        ifTrue: [ response at: #ranked ifAbsent: [ candidateStrings ] ]
+        ifFalse: [ candidateStrings ]. "5. Match them back to your original `candidateEntries`, so we can return 
        the same objects in that new order."
-    finalOrdered := OrderedCollection new.
-    rankedStrings do: [ :str |
-        | matchingEntry |
-        matchingEntry := candidateEntries detect: [ :entry | entry contents = str ] ifNone: [ nil ].
-        matchingEntry ifNotNil: [ finalOrdered add: matchingEntry ] ].
+	finalOrdered := OrderedCollection new.
+	rankedStrings do: [ :str |
+			| matchingEntry |
+			matchingEntry := candidateEntries detect: [ :entry | entry contents = str ] ifNone: [ nil ].
+			matchingEntry ifNotNil: [ finalOrdered add: matchingEntry ] ].
 
-    ^ finalOrdered
+	^ finalOrdered
 ]
 
 { #category : 'accessing' }
@@ -303,28 +296,26 @@ OllamaAPI >> sendReRankRequestToOllama: aPayload [
 	znClient port: self port.
 	znClient path: 'api/rerank'. "Now paramDic is your final request body."
 	paramDic := Dictionary new.
-paramDic at: #model put: self model fullName.
-    paramDic at: #prompt put: (aPayload isString
-        ifTrue: [ aPayload ]
-        ifFalse: [ aPayload at: #prompt ifAbsent: [ '?' ] ]).
-paramDic at: #stream put: false.
-Transcript
-cr;
-show: 'Sending Ollama rerank request: ';
-show: paramDic printString.
+	paramDic at: #model put: self model fullName.
+	paramDic at: #prompt put: (aPayload isString
+			 ifTrue: [ aPayload ]
+			 ifFalse: [ aPayload at: #prompt ifAbsent: [ '?' ] ]).
+	paramDic at: #stream put: false.
+	Transcript
+		cr;
+		show: 'Sending Ollama rerank request: ';
+		show: paramDic printString. "Add more stuff if your Rerank endpoint requires it."
+	self addParameterTo: paramDic.
 
-"Add more stuff if your Rerank endpoint requires it."
-self addParameterTo: paramDic.
-
-znClient contents: paramDic.
-znClient forJsonREST.
-^ [
-znClient post at: #response
-] ensure: [
-Transcript
-cr;
-show: 'Received Ollama rerank response.'.
-]
+	znClient contents: paramDic.
+	znClient forJsonREST.
+    ^ [
+        | response |
+        response := znClient post.
+        (response isDictionary)
+            ifTrue: [ response at: #response ifAbsent: [ response ] ]
+            ifFalse: [ response ]
+    ] on: ZnHttpUnsuccessful do: [ :ex | ex return: Dictionary new ]
 ]
 
 { #category : 'accessing' }
