@@ -13,7 +13,6 @@ BaselineOfAISorter >> baseline: spec [
 			spec postLoadDoIt: #postLoad.
 			spec baseline: 'NeoJSON' with: [ spec repository: 'github://svenvc/NeoJSON/repository' ].
 			spec baseline: 'ExtendedHeuristicCompletionBenchmarks' with: [ spec repository: 'github://omarabedelkader/HeuristicCompletion-Benchmarks/repository' ].
-			spec baseline: 'Seaside3' with: [ spec repository: 'github://SeasideSt/Seaside:master/repository' ].
 			spec baseline: 'Spec2' with: [ spec repository: 'github://pharo-spec/Spec' ].
 
 			spec package: 'AI-Sorter'.
