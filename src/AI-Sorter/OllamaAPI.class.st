@@ -15,8 +15,9 @@ Class {
 	#classInstVars : [
 		'defaultModel'
 	],
-	#category : 'AI-Sorter',
-	#package : 'AI-Sorter'
+	#category : 'AI-Sorter-Archive',
+	#package : 'AI-Sorter',
+	#tag : 'Archive'
 }
 
 { #category : 'accessing' }
