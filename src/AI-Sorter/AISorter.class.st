@@ -1,6 +1,6 @@
 Class {
 	#name : 'AISorter',
-	#superclass : 'CompletionSorter',
+	#superclass : 'Object',
 	#category : 'AI-Sorter-Archive',
 	#package : 'AI-Sorter',
 	#tag : 'Archive'
