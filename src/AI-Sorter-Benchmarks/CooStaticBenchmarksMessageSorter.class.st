@@ -78,8 +78,15 @@ Class {
 }
 
 { #category : 'accessing' }
+CooStaticBenchmarksMessageSorter class >> ast [
+
+	<script>
+	^ self runAllSortersOnPackage: OCASTCache package exportReportTo: 'ast.txt'
+]
+
+{ #category : 'accessing' }
 CooStaticBenchmarksMessageSorter class >> nec [
 
 	<script>
-	^ self runAllSortersOnPackage: NECEntry package exportReportTo: 'nec-sorter-benchmarks.txt'
+	^ self runAllSortersOnPackage: NECEntry package exportReportTo: 'nec.txt'
 ]
