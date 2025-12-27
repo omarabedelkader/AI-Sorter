@@ -1,5 +1,5 @@
 Class {
-	#name : 'CatBoostBM25Sorter',
+	#name : 'CatBoostFull',
 	#superclass : 'CatBoostSorter',
 	#category : 'AI-Sorter-Sorter',
 	#package : 'AI-Sorter',
@@ -7,6 +7,6 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-CatBoostBM25Sorter >> modelName [
-    ^ 'catboost-bm25'
+CatBoostFull >> modelName [
+    'catboost-full'
 ]

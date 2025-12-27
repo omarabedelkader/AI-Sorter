@@ -1,5 +1,5 @@
 Class {
-	#name : 'CatBoostBaseSorter',
+	#name : 'CatBoostBase',
 	#superclass : 'CatBoostSorter',
 	#category : 'AI-Sorter-Sorter',
 	#package : 'AI-Sorter',
@@ -7,6 +7,6 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-CatBoostBaseSorter >> modelName [
+CatBoostBase >> modelName [
     ^ 'catboost-base'
 ]
