@@ -2,7 +2,7 @@
 To begin you can execute this:
 
 ```st 
-CooCompletionDatasetExporter
+CooCompletionDatasetExporterMessages
     exportOnPackage: 'NECompletion'
     heuristics: [ :builder | builder messageHeuristic ]
 	 context: #none
@@ -17,25 +17,6 @@ Available contexts
 - #method:               	full method source
 - #classSignature:       	class definition plus method signatures
 - #class:  
-
-
-```
-Metacello new
- baseline:'Seaside3';
- repository: 'github://SeasideSt/Seaside:master/repository';
- load
-```
-
-```
-    Metacello new
-        repository: 'github://pharo-spec/Spec';
-        baseline: 'Spec2';
-        onConflict: [ :e | e useIncoming ];
-        onUpgrade: [ :e | e useIncoming ];
-        ignoreImage;
-        load
-
-```
 
 
 "
