@@ -3,7 +3,7 @@ To begin you can execute this:
 
 ```st 
 CooCompletionDatasetExporterMessages
-    exportOnPackages: 'NECompletion'
+    exportOnPackages: #( 'AI-Sorter' )
     heuristics: [ :builder | builder messageHeuristic ]
 	 context: #none
     to: 'completion-dataset.json'.
