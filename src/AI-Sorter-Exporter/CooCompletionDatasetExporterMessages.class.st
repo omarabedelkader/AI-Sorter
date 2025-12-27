@@ -3,7 +3,7 @@ To begin you can execute this:
 
 ```st 
 CooCompletionDatasetExporterMessages
-    exportOnPackage: 'NECompletion'
+    exportOnPackages: 'NECompletion'
     heuristics: [ :builder | builder messageHeuristic ]
 	 context: #none
     to: 'completion-dataset.json'.
@@ -15,8 +15,6 @@ Available contexts
 - #completion:           	receiver expression and the requested prefix
 - #surroundingCompletion:	source up to the call site plus the requested prefix (default fallback)
 - #method:               	full method source
-- #classSignature:       	class definition plus method signatures
-- #class:  
 
 
 "
