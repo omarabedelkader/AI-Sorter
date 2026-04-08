@@ -32,9 +32,11 @@ CooGlobalSorterResultSetBuilder >> sorterClass: anObject [
 { #category : 'visiting' }
 CooGlobalSorterResultSetBuilder >> visitNode: aNode [
 
-	| fetcher entries |
+	| fetcher entries sorter |
 	entries := aNode completionEntries: completionContext position.
-	"we should probably be able to remove all the implementations of completionEntries:"
+	sorter := self sorterClass new context: completionContext.
+	entries := sorter sortCompletionList: entries.
+
 	fetcher := CoCollectionFetcher onCollection: entries.
 
 	^ self configureFetcher: fetcher forNode: aNode
