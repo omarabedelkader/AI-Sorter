@@ -14,11 +14,11 @@ BaselineOfAISorter >> baseline: spec [
 
 			spec 
 				baseline: 'NeoJSON' 
-				with: [ spec repository: 'github://svenvc/NeoJSON:main/src' ].
+				with: [ spec repository: 'github://svenvc/NeoJSON:main/repository' ].
 
 			spec
 				baseline: 'ExtendedHeuristicCompletionBenchmarks'
-				with: [ spec repository: 'github://omarabedelkader/HeuristicCompletion-Benchmarks:main/src' ].
+				with: [ spec repository: 'github://omarabedelkader/HeuristicCompletion-Benchmarks:main/repository' ].
 "
 			spec baseline: 'Spec2' with: [ spec repository: 'github://pharo-spec/Spec' ].
 			spec baseline: 'LevenshteinSorter' with: [ spec repository: 'github://omarabedelkader/Levenshtein-Sorter:main/src' ].
