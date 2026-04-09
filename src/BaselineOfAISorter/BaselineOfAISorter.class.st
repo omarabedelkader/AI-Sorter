@@ -14,7 +14,7 @@ BaselineOfAISorter >> baseline: spec [
 
 			spec 
 				baseline: 'NeoJSON' 
-				with: [ spec repository: 'github://svenvc/NeoJSON:main/repository' ].
+				with: [ spec repository: 'github://svenvc/NeoJSON/repository' ].
 
 			spec
 				baseline: 'ExtendedHeuristicCompletionBenchmarks'
