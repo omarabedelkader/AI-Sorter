@@ -16,7 +16,7 @@ BaselineOfAISorter >> baseline: spec [
 
 			spec
 				baseline: 'ExtendedHeuristicCompletionBenchmarks'
-				with: [ spec repository: 'github://omarabedelkader/HeuristicCompletion-Benchmarks/repository' ].
+				with: [ spec repository: 'github://omarabedelkader/HeuristicCompletion-Benchmarks:main/src' ].
 "
 			spec baseline: 'Spec2' with: [ spec repository: 'github://pharo-spec/Spec' ].
 			spec baseline: 'LevenshteinSorter' with: [ spec repository: 'github://omarabedelkader/Levenshtein-Sorter:main/src' ].
