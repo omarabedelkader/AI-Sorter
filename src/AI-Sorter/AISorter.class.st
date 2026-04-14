@@ -32,41 +32,44 @@ AISorter >> contextTextFrom: aCompletionContext [
 
 { #category : 'sorting' }
 AISorter >> externalReRank: candidateEntries context: completionContext [
-    | textUpToCaret api beforeStrings reranked |
 
-    textUpToCaret := ''.
+	| textUpToCaret api beforeStrings reranked |
+	textUpToCaret := ''.
 
-    ((completionContext notNil
-        and: [ completionContext respondsTo: #source ])
-        and: [ completionContext respondsTo: #position ]) ifTrue: [
-            [ textUpToCaret := completionContext source
-                copyFrom: 1
-                to: (completionContext position min: completionContext source size) ]
-                on: Error
-                do: [ textUpToCaret := '' ] ].
+	((completionContext notNil and: [ completionContext respondsTo: #source ]) and: [ completionContext respondsTo: #position ])
+		ifTrue: [
+				[ textUpToCaret := completionContext source copyFrom: 1 to: (completionContext position min: completionContext source size) ]
+					on: Error
+					do: [ textUpToCaret := '' ] ].
 
-    beforeStrings := candidateEntries collect: [ :each |
-        (each respondsTo: #contents)
+	beforeStrings := candidateEntries collect: [ :each |
+			                 (each respondsTo: #contents)
+				                 ifTrue: [ each contents ]
+				                 ifFalse: [ each asString ] ].
+
+	Transcript
+		show: 'Before rerank:';
+		cr.
+	candidateEntries do: [ :each |
+			Transcript
+				show: ((each respondsTo: #contents)
+						 ifTrue: [ each contents ]
+						 ifFalse: [ each asString ]);
+				cr ].
+
+	api := ExternalRerankerAPI new.
+	reranked := api reRankCandidates: candidateEntries withContext: textUpToCaret.
+
+	Transcript show: 'After rerank:'; cr.
+reranked do: [ :each |
+    Transcript
+        show: ((each respondsTo: #contents)
             ifTrue: [ each contents ]
-            ifFalse: [ each asString ] ].
+            ifFalse: [ each asString ]);
+        cr
+].
 
-    Transcript
-        show: 'Before rerank: ';
-        show: beforeStrings printString;
-        cr.
-
-    api := ExternalRerankerAPI new.
-    reranked := api reRankCandidates: candidateEntries withContext: textUpToCaret.
-
-    Transcript
-        show: 'After rerank: ';
-        show: ((reranked collect: [ :each |
-            (each respondsTo: #contents)
-                ifTrue: [ each contents ]
-                ifFalse: [ each asString ] ]) printString);
-        cr.
-
-    ^ reranked
+	^ reranked
 ]
 
 { #category : 'sorting' }
