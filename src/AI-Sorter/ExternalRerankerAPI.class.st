@@ -87,7 +87,7 @@ ExternalRerankerAPI >> port: anInteger [
 { #category : 'private' }
 ExternalRerankerAPI >> postJson: aDictionary [
 
-    | client response |
+    | client body |
     client := ZnClient new.
     client
         timeout: 30;
@@ -97,16 +97,16 @@ ExternalRerankerAPI >> postJson: aDictionary [
         contentType: ZnMimeType applicationJson;
         accept: ZnMimeType applicationJson.
 
-    [ response := client execute ]
+    [ body := client execute ]
         on: Error
         do: [ :ex |
             self error: 'Reranker HTTP request failed: ', ex messageText ].
 
-    response isSuccess ifFalse: [
-        self error: 'Reranker server returned HTTP ', response statusLine asString
+    client isSuccess ifFalse: [
+        self error: 'Reranker server returned HTTP ', client response statusLine asString
     ].
 
-    ^ NeoJSONReader fromString: response contents
+    ^ NeoJSONReader fromString: body
 ]
 
 { #category : 're-ranking' }
