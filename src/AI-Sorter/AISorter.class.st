@@ -1,9 +1,9 @@
 Class {
 	#name : 'AISorter',
-	#superclass : 'Object',
-	#category : 'AI-Sorter-Archive',
+	#superclass : 'CompletionSorter',
+	#category : 'AI-Sorter-new',
 	#package : 'AI-Sorter',
-	#tag : 'Archive'
+	#tag : 'new'
 }
 
 { #category : 'sorting' }
@@ -24,8 +24,9 @@ AISorter >> externalReRank: candidateEntries context: completionContext [
 
 { #category : 'sorting' }
 AISorter >> sortCompletionList: aCompletionList [
+
+self halt.
     aCompletionList ifEmpty: [ ^ aCompletionList ].
-    self context ifNil: [ ^ aCompletionList ].
 
     ^ self externalReRank: aCompletionList context: self context
 ]

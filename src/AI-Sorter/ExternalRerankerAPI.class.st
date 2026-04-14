@@ -6,9 +6,9 @@ Class {
 		'port',
 		'path'
 	],
-	#category : 'AI-Sorter-Archive',
+	#category : 'AI-Sorter-new',
 	#package : 'AI-Sorter',
-	#tag : 'Archive'
+	#tag : 'new'
 }
 
 { #category : 'private' }
@@ -28,6 +28,18 @@ ExternalRerankerAPI >> candidateStringsFrom: candidateEntries [
         (each respondsTo: #contents)
             ifTrue: [ each contents ]
             ifFalse: [ each asString ] ]
+]
+
+{ #category : 'accessing' }
+ExternalRerankerAPI >> host [
+
+	^ host
+]
+
+{ #category : 'accessing' }
+ExternalRerankerAPI >> host: anObject [
+
+	host := anObject
 ]
 
 { #category : 'initialization' }
@@ -68,29 +80,40 @@ ExternalRerankerAPI >> postJson: aDictionary [
     | client response |
     client := ZnClient new.
     client
+        timeout: 30;
         url: ('http://', self host, ':', self port asString, '/', self path);
         method: #POST;
-        entity: (
-            ZnEntity
-                with: (NeoJSONWriter toString: aDictionary)
-                type: ZnMimeType applicationJson
-        ).
+        contents: (NeoJSONWriter toString: aDictionary);
+        contentType: ZnMimeType applicationJson;
+        accept: ZnMimeType applicationJson.
 
-    response := client execute.
+    [ response := client execute ]
+        on: Error
+        do: [ :ex |
+            self error: 'Reranker HTTP request failed: ', ex messageText ].
+
+    response isSuccess ifFalse: [
+        self error: 'Reranker server returned HTTP ', response statusLine asString
+    ].
 
     ^ NeoJSONReader fromString: response contents
 ]
 
 { #category : 're-ranking' }
-ExternalRerankerAPI >> reRankCandidates: candidateEntries withContext: textSoFar [
+ExternalRerankerAPI >> reRankCandidates: candidateEntries withContext: textSoFar [ [
 
     | payload json rankedStrings ordered |
     candidateEntries ifEmpty: [ ^ candidateEntries ].
 
-    payload := self buildPayloadFor: candidateEntries context: textSoFar.
-    json := self postJson: payload.
+    [
+        payload := self buildPayloadFor: candidateEntries context: textSoFar.
+        json := self postJson: payload.
+        rankedStrings := json at: 'ranked_candidates' ifAbsent: [ #() ].
+    ] on: Error do: [ :ex |
+        Transcript show: 'Reranker failed: ', ex messageText; cr.
+        ^ candidateEntries
+    ].
 
-    rankedStrings := json at: 'ranked_candidates' ifAbsent: [ #() ].
     rankedStrings ifEmpty: [ ^ candidateEntries ].
 
     ordered := OrderedCollection new.
@@ -105,9 +128,9 @@ ExternalRerankerAPI >> reRankCandidates: candidateEntries withContext: textSoFar
             ifNone: [ nil ].
         found ifNotNil: [ ordered add: found ] ].
 
-    "Keep any missing originals at the end"
     candidateEntries do: [ :entry |
         (ordered includes: entry) ifFalse: [ ordered add: entry ] ].
 
-    ^ ordered
+    ^ ordered asArray
+]
 ]
