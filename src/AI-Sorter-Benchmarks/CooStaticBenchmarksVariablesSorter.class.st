@@ -1,3 +1,6 @@
+"
+managing variables for the bench
+"
 Class {
 	#name : 'CooStaticBenchmarksVariablesSorter',
 	#superclass : 'CooStaticBenchmarksVariables',
