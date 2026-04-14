@@ -12,12 +12,22 @@ Class {
 }
 
 { #category : 'private' }
-ExternalRerankerAPI >> buildPayloadFor: candidateEntries context: textSoFar [
+ExternalRerankerAPI >> buildPayloadFor: candidateEntries context: textSoFar [ 
 
-    | payload |
+    | payload candidates |
     payload := Dictionary new.
+
+    candidates := OrderedCollection new.
+    candidateEntries withIndexDo: [ :each :index |
+        candidates add: (Dictionary new
+            at: 'id' put: index;
+            at: 'text' put: ((each respondsTo: #contents)
+                ifTrue: [ each contents ]
+                ifFalse: [ each asString ]);
+            yourself) ].
+
     payload at: 'context' put: textSoFar.
-    payload at: 'candidates' put: (self candidateStringsFrom: candidateEntries).
+    payload at: 'candidates' put: candidates asArray.
     ^ payload
 ]
 
@@ -100,37 +110,36 @@ ExternalRerankerAPI >> postJson: aDictionary [
 ]
 
 { #category : 're-ranking' }
-ExternalRerankerAPI >> reRankCandidates: candidateEntries withContext: textSoFar [ [
+ExternalRerankerAPI >> reRankCandidates: candidateEntries withContext: textSoFar [
 
-    | payload json rankedStrings ordered |
+    | payload json rankedIds ordered byId |
+
     candidateEntries ifEmpty: [ ^ candidateEntries ].
 
     [
         payload := self buildPayloadFor: candidateEntries context: textSoFar.
         json := self postJson: payload.
-        rankedStrings := json at: 'ranked_candidates' ifAbsent: [ #() ].
+        rankedIds := json at: 'ranked_candidate_ids' ifAbsent: [ #() ].
     ] on: Error do: [ :ex |
         Transcript show: 'Reranker failed: ', ex messageText; cr.
         ^ candidateEntries
     ].
 
-    rankedStrings ifEmpty: [ ^ candidateEntries ].
+    rankedIds ifEmpty: [ ^ candidateEntries ].
+
+    byId := Dictionary new.
+    candidateEntries withIndexDo: [ :entry :index |
+        byId at: index put: entry ].
 
     ordered := OrderedCollection new.
 
-    rankedStrings do: [ :eachString |
+    rankedIds do: [ :eachId |
         | found |
-        found := candidateEntries
-            detect: [ :entry |
-                ((entry respondsTo: #contents)
-                    ifTrue: [ entry contents ]
-                    ifFalse: [ entry asString ]) = eachString ]
-            ifNone: [ nil ].
+        found := byId at: eachId ifAbsent: [ nil ].
         found ifNotNil: [ ordered add: found ] ].
 
     candidateEntries do: [ :entry |
         (ordered includes: entry) ifFalse: [ ordered add: entry ] ].
 
     ^ ordered asArray
-]
 ]
