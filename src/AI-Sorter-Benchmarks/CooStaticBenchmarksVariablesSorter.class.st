@@ -12,7 +12,7 @@ Class {
 CooStaticBenchmarksVariablesSorter class >> ast [
 
 	<script>
-	^ self runAllSortersOnPackage: OCASTCache package exportReportTo: 'ast-variables.txt'
+	^ self runAllSortersOnPackage: AIAstar package exportReportTo: 'ast-variables.txt'
 ]
 
 { #category : 'accessing' }

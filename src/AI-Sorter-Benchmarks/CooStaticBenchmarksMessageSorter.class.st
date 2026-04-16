@@ -81,7 +81,7 @@ Class {
 CooStaticBenchmarksMessageSorter class >> ast [
 
 	<script>
-	^ self runAllSortersOnPackage: OCASTCache package exportReportTo: 'ast-message.txt'
+	^ self runAllSortersOnPackage: AIAstar package exportReportTo: 'ast-message.txt'
 ]
 
 { #category : 'accessing' }
