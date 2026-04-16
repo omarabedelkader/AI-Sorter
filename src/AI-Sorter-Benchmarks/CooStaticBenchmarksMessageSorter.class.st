@@ -81,12 +81,12 @@ Class {
 CooStaticBenchmarksMessageSorter class >> ast [
 
 	<script>
-	^ self runAllSortersOnPackage: OCASTCache package exportReportTo: 'ast.txt'
+	^ self runAllSortersOnPackage: OCASTCache package exportReportTo: 'ast-message.txt'
 ]
 
 { #category : 'accessing' }
 CooStaticBenchmarksMessageSorter class >> nec [
 
 	<script>
-	^ self runAllSortersOnPackage: NECEntry package exportReportTo: 'nec.txt'
+	^ self runAllSortersOnPackage: NECEntry package exportReportTo: 'nec-message.txt'
 ]

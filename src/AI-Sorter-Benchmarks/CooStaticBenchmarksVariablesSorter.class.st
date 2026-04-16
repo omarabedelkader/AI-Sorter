@@ -12,12 +12,12 @@ Class {
 CooStaticBenchmarksVariablesSorter class >> ast [
 
 	<script>
-	^ self runAllSortersOnPackage: OCASTCache package exportReportTo: 'ast.txt'
+	^ self runAllSortersOnPackage: OCASTCache package exportReportTo: 'ast-variables.txt'
 ]
 
 { #category : 'accessing' }
 CooStaticBenchmarksVariablesSorter class >> nec [
 
 	<script>
-	^ self runAllSortersOnPackage: NECEntry package exportReportTo: 'nec.txt'
+	^ self runAllSortersOnPackage: NECEntry package exportReportTo: 'nec-variables.txt'
 ]
