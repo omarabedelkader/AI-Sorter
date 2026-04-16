@@ -35,6 +35,7 @@ BaselineOfAISorter >> baseline: spec [
 
 { #category : 'baselines' }
 BaselineOfAISorter >> postLoad [
+	CompletionContext sorterClass: NoSorter
 
-	"CompletionContext sorterClass: NoSorter"
+	
 ]
