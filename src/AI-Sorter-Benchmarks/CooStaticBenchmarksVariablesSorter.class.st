@@ -9,6 +9,13 @@ Class {
 }
 
 { #category : 'accessing' }
+CooStaticBenchmarksVariablesSorter class >> all [
+
+	<script>
+	^ self runAllSortersOnImagePackagesExportReportTo: 'all-variables.txt'
+]
+
+{ #category : 'accessing' }
 CooStaticBenchmarksVariablesSorter class >> ast [
 
 	<script>
@@ -20,4 +27,16 @@ CooStaticBenchmarksVariablesSorter class >> nec [
 
 	<script>
 	^ self runAllSortersOnPackage: NECEntry package exportReportTo: 'nec-variables.txt'
+]
+
+{ #category : 'running' }
+CooStaticBenchmarksVariablesSorter class >> runAllSortersOnImagePackages [
+
+	^ CooImageBenchmarkRunner run: self
+]
+
+{ #category : 'running' }
+CooStaticBenchmarksVariablesSorter class >> runAllSortersOnImagePackagesExportReportTo: aFileReference [
+
+	^ CooImageBenchmarkRunner run: self exportReportTo: aFileReference
 ]

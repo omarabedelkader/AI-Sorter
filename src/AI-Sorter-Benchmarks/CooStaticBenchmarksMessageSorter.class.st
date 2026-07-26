@@ -78,6 +78,13 @@ Class {
 }
 
 { #category : 'accessing' }
+CooStaticBenchmarksMessageSorter class >> all [
+
+	<script>
+	^ self runAllSortersOnImagePackagesExportReportTo: 'all-message.txt'
+]
+
+{ #category : 'accessing' }
 CooStaticBenchmarksMessageSorter class >> ast [
 
 	<script>
@@ -89,4 +96,16 @@ CooStaticBenchmarksMessageSorter class >> nec [
 
 	<script>
 	^ self runAllSortersOnPackage: NECEntry package exportReportTo: 'nec-message.txt'
+]
+
+{ #category : 'running' }
+CooStaticBenchmarksMessageSorter class >> runAllSortersOnImagePackages [
+
+	^ CooImageBenchmarkRunner run: self
+]
+
+{ #category : 'running' }
+CooStaticBenchmarksMessageSorter class >> runAllSortersOnImagePackagesExportReportTo: aFileReference [
+
+	^ CooImageBenchmarkRunner run: self exportReportTo: aFileReference
 ]
